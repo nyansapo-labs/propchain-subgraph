@@ -1,0 +1,59 @@
+specVersion: 1.0.0
+indexerHints:
+  prune: auto
+schema:
+  file: ./schema.graphql
+dataSources:
+  - kind: ethereum
+    name: PropertyRegistry
+    network: sepolia
+    source:
+      address: "0xEbF68D0316F5Ca8dbeD956e4f1bF709490E53166"
+      abi: PropertyRegistry
+      startBlock: 6145258
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.7
+      language: wasm/assemblyscript
+      entities:
+        - AuctionCanceled
+        - AuctionCreated
+        - AuctionEnded
+        - BidPlaced
+        - PropertyDocsUpdated
+        - PropertyPriceUpdated
+        - PropertyRegistered
+        - PropertyTransferred
+        - PropertyVerified
+        - TransactionCompleted
+        - TransactionConfirmed
+        - TransactionInitiated
+      abis:
+        - name: PropertyRegistry
+          file: ./abis/PropertyRegistry.json
+      eventHandlers:
+        - event: AuctionCanceled(indexed string,indexed address)
+          handler: handleAuctionCanceled
+        - event: AuctionCreated(indexed string,indexed address,uint256,uint256)
+          handler: handleAuctionCreated
+        - event: AuctionEnded(indexed string,indexed address,uint256)
+          handler: handleAuctionEnded
+        - event: BidPlaced(indexed string,indexed address,uint256)
+          handler: handleBidPlaced
+        - event: PropertyDocsUpdated(string,string)
+          handler: handlePropertyDocsUpdated
+        - event: PropertyPriceUpdated(string,uint256,uint256)
+          handler: handlePropertyPriceUpdated
+        - event: PropertyRegistered(string,address,string,string)
+          handler: handlePropertyRegistered
+        - event: PropertyTransferred(string,address,address)
+          handler: handlePropertyTransferred
+        - event: PropertyVerified(string)
+          handler: handlePropertyVerified
+        - event: TransactionCompleted(string,address,address)
+          handler: handleTransactionCompleted
+        - event: TransactionConfirmed(string,address,address)
+          handler: handleTransactionConfirmed
+        - event: TransactionInitiated(string,address,address)
+          handler: handleTransactionInitiated
+      file: ./src/property-registry.ts

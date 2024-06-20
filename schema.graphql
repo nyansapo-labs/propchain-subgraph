@@ -1,0 +1,45 @@
+type Property @entity {
+  id: ID!
+  owner: Bytes!
+  location: String!
+  gpsAddress: String! @unique
+  ipfsHash: String!
+  isVerified: Boolean!
+  price: BigInt!
+  biddingStarted: Boolean!
+  isAuctionActive: Boolean!
+  transactions: [Transaction!]! @derivedFrom(field: "property")
+}
+
+type Transaction @entity {
+  id: ID!
+  property: Property!
+  gpsAddress: String!
+  buyer: Bytes!
+  seller: Bytes!
+  buyerConfirmed: Boolean!
+  sellerConfirmed: Boolean!
+  adminConfirmed: Boolean!
+  isActive: Boolean!
+}
+
+type Auction @entity {
+  id: ID!
+  propertyAddress: String!
+  seller: Bytes!
+  highestBidder: Bytes
+  startingPrice: BigInt!
+  highestBid: BigInt!
+  auctionEndTime: BigInt!
+  isActive: Boolean!
+  bidPlaced: Boolean!
+}
+
+type AuctionEvent @entity {
+  id: ID!
+  auctionId: String!
+  eventType: String!
+  eventTimestamp: BigInt!
+  bidder: Bytes
+  bidAmount: BigInt
+}
